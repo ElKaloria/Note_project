@@ -8,17 +8,20 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.note_app.schemas import CreateNote
 from src.note_app.models import notes
 from src.database import get_async_session
+from fastapi import Response
 
 
 async def valid_post_id(post_id: int,
-                        session: AsyncSession = Depends(get_async_session)) -> dict[str, str] | Any:
+                        response: Response,
+                        session: AsyncSession = Depends(get_async_session)):
     query = select(notes).where(notes.c.id == post_id)
     post = await session.execute(query)
-    print(post)
-    if not post:
-        return {"error": "post not found"}
+    result = post.first()
+    if not result:
+        response.status_code = 404
+        return {"description": "Note not found"}
 
-    return post.first()
+    return result
 
 
 async def valid_text_and_title(note: CreateNote):
