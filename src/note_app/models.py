@@ -10,5 +10,5 @@ notes = Table(
     Column("id", Integer, primary_key=True),
     Column("title", String),
     Column("text", String),
-    Column("created_at", TIMESTAMP, default=datetime.utcnow()),
+    Column("created_at", TIMESTAMP(timezone=True), default=datetime.utcnow()),
 )
