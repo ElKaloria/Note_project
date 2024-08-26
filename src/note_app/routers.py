@@ -67,4 +67,3 @@ async def get_note_by_id(note_by_id: NoteSchema | dict[str, str] = Depends(valid
     """
 
     return note_by_id
-
